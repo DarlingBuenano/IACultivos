@@ -1,17 +1,55 @@
+
+var modelo = null;
+var canvas = document.getElementById('canvas');
+
 document.addEventListener("DOMContentLoaded", () => {
-
-    var modelo = null;
-    var canvas = document.getElementById('canvas');
-    var btn_predecir = document.getElementById('btn-predecir');
-
     // Cargar modelo
     (async ()=> {
-        console.log("Cargando modelo");
-        modelo = await tf.loadLayersModel(location.origin + "/static/model/maize_model/model.json")
-        console.log("modelo cargado")
+        modelo = await tf.loadLayersModel(location.origin + "/static/model/maize_model/model.json");
     })();
 
-    //btn_predecir.onclick = function(e) {
+    window.onbeforeunload = function(e) {
+      e.preventDefault();
+      //Elimino la referencia al objeto para que el recolector de basura del navegador libere memoria.
+      console.log("Eliminando el modelo");
+      modelo = null;
+    };
+    window.onunload = function(e) {
+      e.preventDefault();
+      //Elimino la referencia al objeto para que el recolector de basura del navegador libere memoria.
+      console.log("Eliminando el modelo");
+      modelo = null;
+    };
+
+    /*window.caches.keys().then(key => {
+      // Corroborar si hay caches
+      if (key.length == 0) {
+        caches.open('cache-tf-v1').then(cache => {
+          console.log("cache creado");
+          (async ()=> {
+            console.log("Cargando modelo");
+            modelo = await tf.loadLayersModel(location.origin + "/static/model/maize_model/model.json")
+            console.log("modelo cargado");
+            cache.add(modelo);
+            console.log("modelo agregado al cache");
+          })();
+        });
+      }
+      else {
+        //comprobar si el cache existe
+        caches.has('cache-tf-v1').then( cache => {
+          if (cache) {
+            //si esxiste el cache
+            console.log("cache existe");
+          }
+          else {
+            //no existe el cache
+            console.log("cache no existe");
+          }
+        });
+      }
+    });*/
+
     function realizarPredicciones() {
       var ctx = canvas.getContext("2d");
       var img = new Image();
@@ -57,6 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
         clase_1.innerHTML = clases[1] + ": " + Math.round(resultados[1] * 100).toFixed(2) + "%";
         clase_2.innerHTML = clases[2] + ": " + Math.round(resultados[2] * 100).toFixed(2) + "%";
         clase_3.innerHTML = clases[3] + ": " + Math.round(resultados[3] * 100).toFixed(2) + "%";
+
+        document.getElementById('col_img_subida').className = "col-6 d-flex justify-content-end";
+        document.getElementById('col_result_img_subida').hidden = false;
 
         mostrarInfoEnfermedad(mayorIndice);
       }
