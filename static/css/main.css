@@ -19,7 +19,7 @@
 /* Colors */
 :root {
   --color-default: #222222;
-  --color-primary: #008374;
+  --color-primary: #005858;/*008374*/
   --color-secondary: #f85a40;
 }
 
@@ -59,7 +59,7 @@ h6 {
 # Sections & Section Header
 --------------------------------------------------------------*/
 section {
-  padding: 60px 0;
+  padding: 40px 0;
   overflow: hidden;
 }
 
@@ -1933,7 +1933,7 @@ section {
 }
 
 .hero p {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 400;
   margin-bottom: 30px;
 }
